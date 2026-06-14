@@ -37,16 +37,16 @@ body{
     background-image: radial-gradient(#FFF175,#FFFA63,#A89700);
 }
 .red-dark{
-    background-image: radial-gradient(#B00000,#E03636,#FFB805,#FFFFFF);
+    background-image: radial-gradient(#B00000,#E03636,#FFB805);
 }
 .green-dark{
-    background-image: radial-gradient(#2A9B2E,#22FF00,#FFE500,#FFFFFF);
+    background-image: radial-gradient(#2A9B2E,#22FF00,#FFE500);
 }
 .blue-dark{
-    background-image: radial-gradient(#050343,#090979,#00D4FF,#FFFFFF);
+    background-image: radial-gradient(#050343,#090979,#00D4FF);
 }
 .yellow-dark{
-    background-image: radial-gradient(#A89700,#FFFA63,#FFF175,#FFFFFF);
+    background-image: radial-gradient(#A89700,#FFFA63,#FFF175);
 }
 .body-dark{
     background-image: linear-gradient( #1e1e1e 0%, #6b6b6b 100%);
