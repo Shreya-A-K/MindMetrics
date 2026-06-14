@@ -1,0 +1,60 @@
+body{
+    text-align: center;
+    background-image: linear-gradient( #fdfbfb 0%, #ebedee 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    
+}
+.btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.btn{
+    height: 12rem;
+    width: 12rem;
+    border-radius: 2rem;
+    margin:1rem;
+    border: 0.25rem solid black;
+}
+.mode-btn{
+    background-color: #050343;
+    color: #00D4FF;
+    font-size: 120%;
+    border-radius: 2rem;
+}
+.red{
+    background-image: radial-gradient(#FFB805,#E03636,#B00000);
+}
+.green{
+    background-image: radial-gradient(#FFE500,#22FF00,#2A9B2E);
+}
+.blue{
+    background-image: radial-gradient(#00D4FF,#090979,#050343);
+}
+.yellow{
+    background-image: radial-gradient(#FFF175,#FFFA63,#A89700);
+}
+.red-dark{
+    background-image: radial-gradient(#B00000,#E03636,#FFB805,#FFFFFF);
+}
+.green-dark{
+    background-image: radial-gradient(#2A9B2E,#22FF00,#FFE500,#FFFFFF);
+}
+.blue-dark{
+    background-image: radial-gradient(#050343,#090979,#00D4FF,#FFFFFF);
+}
+.yellow-dark{
+    background-image: radial-gradient(#A89700,#FFFA63,#FFF175,#FFFFFF);
+}
+.body-dark{
+    background-image: linear-gradient( #1e1e1e 0%, #6b6b6b 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    color: #ebedee;
+}
+.mode-btn-dark{
+    background-color: #00D4FF;
+    color: #050343;
+}
