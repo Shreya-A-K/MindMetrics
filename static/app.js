@@ -16,6 +16,10 @@ let lastClickTime = null;
 let lastFlashTime = null;
 let reactionTimes = [];
 let waiting = false;
+let totalInputs = 0;
+let correctInputs = 0;
+let errorPosition = null;
+let levelIdx=0;
 
 if (savedMode === "dark") {
     body.classList.add("body-dark");
@@ -58,6 +62,7 @@ function levelUp(){
     lastFlashTime= Date.now();
     waiting=true;
     flash(btn);
+    levelIdx=0;
 }
 function flash(btn){
     let classAdded="flash";
@@ -88,25 +93,26 @@ function btnPress(event){
     lastClickTime=now;
     flash(event.target);
     userSeq.push(event.target.id);
-    check();
+    check(levelIdx);
+    levelIdx++;
+    
     console.log(`${event.target.id} Button was pressed!`);
 }
-function check(){
-        if (userSeq.length>gameSeq.length){
+function check(idx){
+        totalInputs++;
+        if (userSeq[idx]!==gameSeq[idx]){
             gameOver();
-            return;
+            return false;
         }else{
-            for (let i=0; i<userSeq.length; i++){
-                if (userSeq[i]!==gameSeq[i]){
-                    gameOver();
-                    return;
-                }
-            }
-            if (userSeq.length==gameSeq.length){
-                setTimeout(levelUp,500);
-            }
-            
+            correctInputs++;
         }
+            
+        if (userSeq.length==gameSeq.length){
+            setTimeout(levelUp,500);
+            return true;
+        }
+            
+        
 }
 
 let allBtns= document.querySelectorAll(".btn");
@@ -115,18 +121,24 @@ for (btn of allBtns){
 }
 
 function gameOver(){
+    // calculate error position 
+    errorPosition=levelIdx+1;
+
     const sessionData = {
         reactionTimes,
         interClickIntervals,
-        score: 5 * level,
-        mode: savedMode
+        levelReached: level,
+        score: 5 * correctInputs,
+        mode: savedMode,
+        accuracy: correctInputs/totalInputs,
+        errorPosition
     };
 
     console.log(sessionData);
 
 
 
-    h2.innerText = `Game Over! Scored : ${5*level} points! Press any key to restart`;
+    h2.innerText = `Game Over! Scored : ${5*correctInputs} points! Press any key to restart`;
     body.classList.add("body-error");
     setTimeout(()=>{
         body.classList.remove("body-error");
@@ -137,6 +149,10 @@ function gameOver(){
     reactionTimes = [];
     lastClickTime = null;
     lastFlashTime = null;
+    totalInputs=0;
+    correctInputs=0;
+    errorPosition=null;
+    levelIdx=0;
     
     waiting = false;
 
