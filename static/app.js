@@ -11,6 +11,11 @@ let availButtons = [red,blue,green,yellow];
 let level=0;
 let gameStart=false;
 let savedMode = localStorage.getItem("mode");
+let interClickIntervals = [];
+let clickTimes = [];
+let flashTimes = [];
+let reactionTimes = [];
+let waiting = false;
 
 if (savedMode === "dark") {
     body.classList.add("body-dark");
@@ -50,10 +55,11 @@ function levelUp(){
     let num = Math.floor(4*Math.random());
     let btn= availButtons[num];
     gameSeq.push(btn.id);
+    flashTimes.push(Date.now());
+    waiting=true;
     flash(btn);
 }
 function flash(btn){
-    
     let classAdded="flash";
     if (savedMode=="dark"){
         classAdded+="-dark";
@@ -67,6 +73,19 @@ function flash(btn){
     
 }
 function btnPress(event){
+    let now = Date.now();
+    clickTimes.push(now);
+    // Reaction time
+    if (waiting){
+        reactionTimes.push(now - flashTimes[flashTimes.length-1]);
+        waiting = false;
+    }
+
+    // Inter Click Interval
+    if (clickTimes.length > 1){
+        let ici = now - clickTimes[clickTimes.length - 2];
+        interClickIntervals.push(ici);
+    }
     flash(event.target);
     userSeq.push(event.target.id);
     check();
@@ -74,14 +93,12 @@ function btnPress(event){
 }
 function check(){
         if (userSeq.length>gameSeq.length){
-            h2.innerText = "Game Over! Press any key to restart";
-            reset();
+            gameOver();
             return;
         }else{
             for (let i=0; i<userSeq.length; i++){
                 if (userSeq[i]!==gameSeq[i]){
-                    h2.innerText = "Game Over! Press any key to restart";
-                    reset();
+                    gameOver();
                     return;
                 }
             }
@@ -97,9 +114,28 @@ for (btn of allBtns){
     btn.addEventListener("click",btnPress);
 }
 
-function reset(){
+function gameOver(){
+    h2.innerText = `Game Over! Scored : ${5*level} points! Press any key to restart`;
+    body.classList.add("body-error");
+    setTimeout(()=>{
+        body.classList.remove("body-error");
+    },500);
+    console.log({
+        reactionTimes,
+        interClickIntervals
+    });
+
+    // Resetting analytics parameters 
+    interClickIntervals = [];
+    clickTimes = [];
+    flashTimes = [];
+    reactionTimes = [];
+    waiting = false;
+
+    //Resetting the game parameters 
     level=0;
     userSeq=[];
     gameSeq=[];
     gameStart=false;
 }
+
