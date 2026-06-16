@@ -128,7 +128,7 @@ function gameOver(){
         reactionTimes,
         interClickIntervals,
         levelReached: level,
-        score: 5 * correctInputs,
+        score: 5 * correctInputs + 10 * errorPosition,
         mode: savedMode,
         accuracy: correctInputs/totalInputs,
         errorPosition
@@ -138,7 +138,7 @@ function gameOver(){
 
 
 
-    h2.innerText = `Game Over! Scored : ${5*correctInputs} points! Press any key to restart`;
+    h2.innerText = `Game Over! Scored : ${5 * correctInputs + 10 * errorPosition} points! Press any key to restart`;
     body.classList.add("body-error");
     setTimeout(()=>{
         body.classList.remove("body-error");
