@@ -10,7 +10,6 @@ let userSeq=[];
 let availButtons = [red,blue,green,yellow];
 let level=0;
 let gameStart=false;
-let waiting= false;
 let savedMode = localStorage.getItem("mode");
 
 if (savedMode === "dark") {
@@ -40,33 +39,67 @@ changeMode.addEventListener("click",function(){
 })
 document.addEventListener("keypress",function(){
     if (!gameStart){
-        level++;
         gameStart=true;
-        h2.innerText="Level "+level;
-        let num = Math.floor(4*Math.random());
-        gameSeq.push(availButtons[num].id);
-        flash(num);
-        waiting=true;
-        
+        levelUp();     
     }
 })
-function flash(num){
-
+function levelUp(){
+    userSeq=[];
+    level++;
+    h2.innerText="Level "+level;
+    let num = Math.floor(4*Math.random());
+    let btn= availButtons[num];
+    gameSeq.push(btn.id);
+    flash(btn);
+}
+function flash(btn){
+    
     let classAdded="flash";
     if (savedMode=="dark"){
         classAdded+="-dark";
     }
-    availButtons[num].classList.add(classAdded);
+    btn.classList.add(classAdded);
     setTimeout(()=>{
-        availButtons[num].classList.remove(classAdded);
-        console.log("flashed");
+        btn.classList.remove(classAdded);
+        console.log(`${btn.id} flashed`);
     }
-        ,400);
+        ,250);
     
 }
-if (gameStart && !waiting){
-    let num = Math.floor(4*Math.random());
-    gameSeq.push(availButtons[num]);
-    flash(num);
-    waiting=true;
+function btnPress(event){
+    flash(event.target);
+    userSeq.push(event.target.id);
+    check();
+    console.log(`${event.target.id} Button was pressed!`);
+}
+function check(){
+        if (userSeq.length>gameSeq.length){
+            h2.innerText = "Game Over! Press any key to restart";
+            reset();
+            return;
+        }else{
+            for (let i=0; i<userSeq.length; i++){
+                if (userSeq[i]!==gameSeq[i]){
+                    h2.innerText = "Game Over! Press any key to restart";
+                    reset();
+                    return;
+                }
+            }
+            if (userSeq.length==gameSeq.length){
+                setTimeout(levelUp,500);
+            }
+            
+        }
+}
+
+let allBtns= document.querySelectorAll(".btn");
+for (btn of allBtns){
+    btn.addEventListener("click",btnPress);
+}
+
+function reset(){
+    level=0;
+    userSeq=[];
+    gameSeq=[];
+    gameStart=false;
 }
