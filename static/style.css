@@ -58,3 +58,11 @@ body{
     background-color: #00D4FF;
     color: #050343;
 }
+.flash{
+    background-image: none;
+    background-color: rgb(0, 0, 0);
+}
+.flash-dark{
+    background-image: none;
+    background-color: rgb(255, 255, 255);
+}
