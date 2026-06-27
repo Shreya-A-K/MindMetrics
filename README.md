@@ -1,4 +1,4 @@
-# 🧠 MindMetrics: Attention Analysis System
+# 🧠 MindMetrics: Attention Analysis System (Work in progress)
 
 **MindMetrics** is an interactive web-based project that analyzes user attention span through behavioral data collected from a *Simon Says* game.
 
