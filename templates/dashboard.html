@@ -6,9 +6,16 @@
     <title>Dashboard Analytics</title>
 </head>
 <body>
+    <h1>MindMetrics Dashboard</h1>
+
+    <canvas id="accuracyChart"></canvas>
     <canvas id="reactionChart"></canvas>
+    
+    <div id="data"></div>
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="dashboard.js"></script>
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
 </body>
 </html>

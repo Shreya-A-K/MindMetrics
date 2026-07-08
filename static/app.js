@@ -20,6 +20,9 @@ let totalInputs = 0;
 let correctInputs = 0;
 let errorPosition = null;
 let levelIdx=0;
+let levelAccuracy = [];
+let currentLevelCorrect = 0;
+let currentLevelTotal = 0;
 
 if (savedMode === "dark") {
     body.classList.add("body-dark");
@@ -100,14 +103,21 @@ function btnPress(event){
 }
 function check(idx){
         totalInputs++;
+        currentLevelTotal++;
         if (userSeq[idx]!==gameSeq[idx]){
+            levelAccuracy.push(currentLevelCorrect / currentLevelTotal);
             gameOver();
             return false;
         }else{
+            correctArray.push(true); 
             correctInputs++;
+            currentLevelCorrect++;
         }
             
         if (userSeq.length==gameSeq.length){
+            levelAccuracy.push(1); 
+            currentLevelCorrect = 0;
+            currentLevelTotal = 0;
             setTimeout(levelUp,500);
             return true;
         }
@@ -127,6 +137,7 @@ function gameOver(){
     const sessionData = {
         reactionTimes,
         interClickIntervals,
+        levelAccuracy,
         levelReached: level,
         score: 5 * correctInputs + 10 * errorPosition,
         mode: savedMode,
@@ -134,7 +145,17 @@ function gameOver(){
         errorPosition
     };
 
-    console.log(sessionData);
+    localStorage.setItem("sessionData", JSON.stringify(sessionData));
+    fetch("/save-session", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(sessionData)
+    })
+    .then(res => res.json())
+    .then(data => console.log("Saved:", data))
+    .catch(err => console.error("Error:", err));
 
 
 
@@ -153,6 +174,9 @@ function gameOver(){
     correctInputs=0;
     errorPosition=null;
     levelIdx=0;
+    levelAccuracy = [];
+    currentLevelCorrect = 0;
+    currentLevelTotal = 0;
     
     waiting = false;
 
@@ -163,3 +187,15 @@ function gameOver(){
     gameStart=false;
 }
 
+let viewAnalyticsBtn=document.querySelector("#analyticsBtn");
+viewAnalyticsBtn.addEventListener("click",function (){
+    
+    const data = localStorage.getItem("sessionData");
+
+    if (!data) {
+        alert("Play a game first to view analytics!");
+        return;
+    }
+    
+    window.location.href = "/dashboard";
+})
